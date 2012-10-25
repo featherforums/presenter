@@ -1,5 +1,5 @@
 {
-	"name": "feather/themes",
+	"name": "feather/view",
 	"type": "library",
 	"description": "A simply view library.",
 	"license": "BSD",
