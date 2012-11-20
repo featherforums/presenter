@@ -1,6 +1,5 @@
-<?php namespace Feather;
+<?php namespace Feather\View;
 
-use Feather\Sword;
 use Illuminate\Filesystem;
 use Illuminate\View\Environment;
 use Illuminate\Config\Repository;
@@ -50,7 +49,7 @@ class View {
 	 */
 	public function getDirectoryPath($path)
 	{
-		return $path . '/' . ucfirst($this->config->get('feather.forum.theme')) . '/Views';
+		return $path.'/'.ucfirst($this->config['feather.forum.theme']).'/Views';
 	}
 
 	/**
@@ -58,18 +57,16 @@ class View {
 	 * 
 	 * @return void
 	 */
-	public function prepare($paths)
+	public function prepareThemePaths($paths)
 	{
-		$this->registerSwordCompiler();
-
 		// Assign a namespace and some cascading paths so that view files are first searched
 		// for within a theme then within the core view directory.
-		$namespace = array($this->getDirectoryPath($paths['path.themes']), $paths['path'] . '/Feather/Views');
+		$hints = array($this->getDirectoryPath($paths['path.themes']), $paths['path'].'/Views');
 
-		$this->view->addNamespace('feather', $namespace);
+		$this->view->addNamespace('feather', $hints);
 
 		// If the theme has a starter file require the file to bootstrap the theme.
-		$starter = $paths['path.themes'] . '/' . ucfirst($this->config->get('feather.forum.theme')) . '/start.php';
+		$starter = $paths['path.themes'] . '/' . ucfirst($this->config['feather.forum.theme']) . '/start.php';
 
 		if ($this->files->exists($starter))
 		{
@@ -78,25 +75,25 @@ class View {
 	}
 
 	/**
-	 * Register the sword compiler as the default view driver.
+	 * Register the cutlass view compiler.
 	 * 
 	 * @return void
 	 */
-	public function registerSwordCompiler()
+	public function registerCutlassCompiler()
 	{
-		$this->view->extend('sword', function($app)
+		$this->view->extend('cutlass', function($app)
 		{
-			// The Compiler engine requires an instance of the CompilerInterface, which in
-			// this case will be the Blade compiler, so we'll first create the compiler
+			// The CompilerEngine requires an instance of the CompilerInterface, which in
+			// this case will be the Cutlass compiler, so we'll first create the compiler
 			// instance to pass into the engine so it can compile the views properly.
-			$compiler = new Sword($app['files'], $app['config']['view.cache']);
+			$compiler = new Cutlass($app['files'], $app['config']['view.cache']);
 
 			$engine = new CompilerEngine($compiler, $app['files'], $app['config']['view.paths'], '.blade.php');
 
 			return new Environment($engine, $app['events']);
 		});
 
-		$this->config->set('view.driver', 'sword');
+		$this->config['view.driver'] = 'cutlass';
 	}
 
 }

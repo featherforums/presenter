@@ -1,8 +1,8 @@
-<?php namespace Feather;
+<?php namespace Feather\View;
 
 use Illuminate\View\Compilers\BladeCompiler;
 
-class Sword extends BladeCompiler {
+class Cutlass extends BladeCompiler {
 
 	/**
 	 * Compile the given Blade template contents.
