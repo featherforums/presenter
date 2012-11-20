@@ -1,8 +1,8 @@
 {
 	"name": "feather/view",
 	"type": "library",
-	"description": "A simply view library.",
-	"license": "BSD",
+	"description": "A simple view package for Feather.",
+	"license": "BSD-3-Clause",
 	"authors": [
 		{
 			"name": "Jason Lewis",
@@ -18,10 +18,9 @@
 		"mockery/mockery": "0.7.*"
 	},
 	"autoload": {
-		"classmap": [
-			"src/Feather/View.php",
-			"src/Feather/Sword.php"
-		]
+		"psr-0": {
+			"Feather\\View": "src/"
+		}
 	},
 	"minimum-stability": "dev"
 }

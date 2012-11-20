@@ -1,9 +1,10 @@
 <?php
 
 use Mockery as m;
-use Feather\View;
+use Feather\View\View;
 
 class ViewTest extends PHPUnit_Framework_TestCase {
+
 
 	public function tearDown()
 	{
@@ -15,36 +16,25 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 	{
 		$files = m::mock('Illuminate\Filesystem');
 		$view = m::mock('Illuminate\Foundation\Managers\ViewManager');
-		$config = m::mock('Illuminate\Config\Repository');
-
-		$config->shouldReceive('get')->once()->andReturn('foo');
-
+		$config = new Illuminate\Config\Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
+		$config->getLoader()->shouldReceive('load')->once()->with('production', 'feather', null)->andReturn(array('forum' => array('theme' => 'foo')));
 		$view = new View($config, $files, $view);
-
 		$this->assertEquals(__DIR__ . '/Foo/Views', $view->getDirectoryPath(__DIR__));
 	}
 
 
-	public function testCanPrepareViews()
+	public function testCanRegisterCutlass()
 	{
 		$files = m::mock('Illuminate\Filesystem');
 		$view = m::mock('Illuminate\Foundation\Managers\ViewManager');
 		$env = m::mock('Illuminate\View\Environment');
 		$config = new Illuminate\Config\Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
-
-		$view->shouldReceive('extend')->once()->andReturn($env);
-		$view->shouldReceive('addNamespace')->once()->andReturn(true);
-
-		$files->shouldReceive('exists')->once()->andReturn(false);
-
-		$config->getLoader()->shouldReceive('load')->once()->with('production', 'feather', null)->andReturn(array('feather.forum.theme' => 'foo'));
-		$config->getLoader()->shouldReceive('load')->once()->with('production', 'view', null)->andReturn(array('view.driver' => 'foo'));
-
+		$config->getLoader()->shouldReceive('load')->once()->with('production', 'view', null)->andReturn(array('driver' => 'foo'));
+		$this->assertEquals('foo', $config->get('view.driver'));
+		$view->shouldReceive('extend')->once();
 		$view = new View($config, $files, $view);
-
-		$view->prepare(array('path' => __DIR__, 'path.themes' => __DIR__));
-
-		$this->assertEquals('sword', $config->get('view.driver'));
+		$view->registerCutlassCompiler(array('path' => __DIR__, 'path.themes' => __DIR__));
+		$this->assertEquals('cutlass', $config->get('view.driver'));
 	}
 
 }
