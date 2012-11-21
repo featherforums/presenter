@@ -1,7 +1,7 @@
 {
-	"name": "feather/view",
+	"name": "feather/presenter",
 	"type": "library",
-	"description": "A view package for Feather.",
+	"description": "A presenter package for Feather.",
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
@@ -12,7 +12,10 @@
 	],
 	"require": {
 		"php": ">=5.3.0",
-		"illuminate/foundation": ">=1.0.0"
+		"illuminate/support": ">=1.0.0",
+		"illuminate/filesystem": ">=1.0.0",
+		"illuminate/config": ">=1.0.0",
+		"illuminate/view": ">=1.0.0"
 	},
 	"require-dev": {
 		"mockery/mockery": "0.7.*"

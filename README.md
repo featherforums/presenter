@@ -1,5 +1,5 @@
-# Feather View
+# Feather Presenter
 
-A view package for Feather.
+A presenter package for Feather.
 
-[![Build Status](https://travis-ci.org/featherforums/view.png)](https://travis-ci.org/featherforums/view)
+[![Build Status](https://travis-ci.org/featherforums/presenter.png)](https://travis-ci.org/featherforums/presenter)
