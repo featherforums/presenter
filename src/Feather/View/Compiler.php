@@ -2,7 +2,7 @@
 
 use Illuminate\View\Compilers\BladeCompiler;
 
-class Cutlass extends BladeCompiler {
+class Compiler extends BladeCompiler {
 
 	/**
 	 * Compile the given Blade template contents.

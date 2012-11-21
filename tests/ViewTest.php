@@ -17,13 +17,13 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 		$files = m::mock('Illuminate\Filesystem');
 		$view = m::mock('Illuminate\Foundation\Managers\ViewManager');
 		$config = new Illuminate\Config\Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
-		$config->getLoader()->shouldReceive('load')->once()->with('production', 'feather', null)->andReturn(array('forum' => array('theme' => 'foo')));
+		$config->getLoader()->shouldReceive('load')->once()->with('production', 'forum', 'feather')->andReturn(array('theme' => 'foo'));
 		$view = new View($config, $files, $view);
-		$this->assertEquals(__DIR__ . '/Foo/Views', $view->getDirectoryPath(__DIR__));
+		$this->assertEquals(__DIR__.'/Foo/Views', $view->getDirectoryPath(__DIR__));
 	}
 
 
-	public function testCanRegisterCutlass()
+	public function testCanRegisterCompiler()
 	{
 		$files = m::mock('Illuminate\Filesystem');
 		$view = m::mock('Illuminate\Foundation\Managers\ViewManager');
@@ -33,8 +33,8 @@ class ViewTest extends PHPUnit_Framework_TestCase {
 		$this->assertEquals('foo', $config->get('view.driver'));
 		$view->shouldReceive('extend')->once();
 		$view = new View($config, $files, $view);
-		$view->registerCutlassCompiler(array('path' => __DIR__, 'path.themes' => __DIR__));
-		$this->assertEquals('cutlass', $config->get('view.driver'));
+		$view->registerCompiler(array('path' => __DIR__, 'path.themes' => __DIR__));
+		$this->assertEquals('feather::view.compiler', $config->get('view.driver'));
 	}
 
 }

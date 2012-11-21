@@ -49,7 +49,7 @@ class View {
 	 */
 	public function getDirectoryPath($path)
 	{
-		return $path.'/'.ucfirst($this->config['feather.forum.theme']).'/Views';
+		return $path.'/'.ucfirst($this->config['feather::forum.theme']).'/Views';
 	}
 
 	/**
@@ -66,7 +66,7 @@ class View {
 		$this->view->addNamespace('feather', $hints);
 
 		// If the theme has a starter file require the file to bootstrap the theme.
-		$starter = $paths['path.themes'] . '/' . ucfirst($this->config['feather.forum.theme']) . '/start.php';
+		$starter = $paths['path.themes'] . '/' . ucfirst($this->config['feather::forum.theme']) . '/start.php';
 
 		if ($this->files->exists($starter))
 		{
@@ -75,25 +75,25 @@ class View {
 	}
 
 	/**
-	 * Register the cutlass view compiler.
+	 * Register the view compiler.
 	 * 
 	 * @return void
 	 */
-	public function registerCutlassCompiler()
+	public function registerCompiler()
 	{
-		$this->view->extend('cutlass', function($app)
+		$this->view->extend('feather::view.compiler', function($app)
 		{
-			// The CompilerEngine requires an instance of the CompilerInterface, which in
-			// this case will be the Cutlass compiler, so we'll first create the compiler
-			// instance to pass into the engine so it can compile the views properly.
-			$compiler = new Cutlass($app['files'], $app['config']['view.cache']);
+			// The Compiler used by Feather is an extension to the Blade compiler. Feather
+			// has a few special methods that are used throughout views that need to be compiled
+			// alongside the default Blade methods.
+			$compiler = new Compiler($app['files'], $app['config']['view.cache']);
 
 			$engine = new CompilerEngine($compiler, $app['files'], $app['config']['view.paths'], '.blade.php');
 
 			return new Environment($engine, $app['events']);
 		});
 
-		$this->config['view.driver'] = 'cutlass';
+		$this->config['view.driver'] = 'feather::view.compiler';
 	}
 
 }
