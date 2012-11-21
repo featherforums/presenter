@@ -22,7 +22,7 @@
 	},
 	"autoload": {
 		"psr-0": {
-			"Feather\\View": "src/"
+			"Feather\\Presenter": "src/"
 		}
 	},
 	"minimum-stability": "dev"
