@@ -1,7 +1,7 @@
 {
 	"name": "feather/view",
 	"type": "library",
-	"description": "A simple view package for Feather.",
+	"description": "A view package for Feather.",
 	"license": "BSD-3-Clause",
 	"authors": [
 		{
