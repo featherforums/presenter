@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use Feather\View\Compiler;
+use Feather\Presenter\Compiler;
 
 class CompilerTest extends PHPUnit_Framework_TestCase {
 

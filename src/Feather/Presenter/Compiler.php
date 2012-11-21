@@ -1,4 +1,4 @@
-<?php namespace Feather\View;
+<?php namespace Feather\Presenter;
 
 use Illuminate\View\Compilers\BladeCompiler;
 
