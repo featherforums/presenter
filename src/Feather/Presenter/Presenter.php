@@ -1,7 +1,7 @@
 <?php namespace Feather\Presenter;
 
 use Illuminate\Filesystem;
-use Illuminate\View\Environment;
+use Illuminate\View\ViewManager;
 use Illuminate\Config\Repository;
 
 class Presenter {
@@ -23,7 +23,7 @@ class Presenter {
 	/**
 	 * Illuminate view manager instance.
 	 * 
-	 * @var Illuminate\Foundation\Managers\ViewManager
+	 * @var Illuminate\View\ViewManager
 	 */
 	protected $view;
 
@@ -32,10 +32,10 @@ class Presenter {
 	 * 
 	 * @param  Illuminate\Config\Repository  $config
 	 * @param  Illuminate\Filesystem  $files
-	 * @param  Illuminate\View\Environment  $view
+	 * @param  Illuminate\View\ViewManager  $view
 	 * @return void
 	 */
-	public function __construct(Repository $config, Filesystem $files, Environment $view)
+	public function __construct(Repository $config, Filesystem $files, ViewManager $view)
 	{
 		$this->config = $config;
 		$this->files = $files;
