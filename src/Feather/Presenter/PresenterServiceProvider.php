@@ -1,7 +1,5 @@
-<?php namespace Feather\Presenter\Providers;
+<?php namespace Feather\Presenter;
 
-use Feather\Presenter\Compiler;
-use Feather\Presenter\Presenter;
 use Illuminate\View\Environment;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\View\Engines\CompilerEngine;
@@ -20,7 +18,7 @@ class PresenterServiceProvider extends ServiceProvider {
 
 		$app['feather']['presenter'] = $app->share(function() use ($app)
 		{
-			return new Presenter($app['config'], $app['files'], $app['view']->driver());
+			return new Presenter($app);
 		});
 	}
 
