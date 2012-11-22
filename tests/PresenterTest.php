@@ -14,13 +14,14 @@ class PresenterTest extends PHPUnit_Framework_TestCase {
 
 	public function testCanPreparePresenter()
 	{
-		$config = new Illuminate\Config\Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
-		$config->getLoader()->shouldReceive('load')->once()->with('production', 'forum', 'feather')->once()->andReturn(array('theme' => 'foo'));
-		$files = m::mock('Illuminate\Filesystem');
-		$files->shouldReceive('exists')->once()->andReturn(false);
-		$view = m::mock('Illuminate\View\ViewManager');
-		$view->shouldReceive('addNamespace')->once()->with('feather', array('Themes/Foo/Views', 'Application/Views'));
-		$presenter = new Presenter($config, $files, $view);
+		$app = new Illuminate\Container;
+		$app['config'] = new Illuminate\Config\Repository(m::mock('Illuminate\Config\LoaderInterface'), 'production');
+		$app['config']->getLoader()->shouldReceive('load')->once()->with('production', 'forum', 'feather')->once()->andReturn(array('theme' => 'foo'));
+		$app['files'] = m::mock('Illuminate\Filesystem');
+		$app['files']->shouldReceive('exists')->once()->andReturn(false);
+		$app['view'] = m::mock('Illuminate\View\ViewManager');
+		$app['view']->shouldReceive('addNamespace')->once()->with('feather', array('Themes/Foo/Views', 'Application/Views'));
+		$presenter = new Presenter($app);
 		$presenter->prepare(array('path.themes' => 'Themes', 'path' => 'Application'));
 	}
 

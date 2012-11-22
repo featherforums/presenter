@@ -1,9 +1,5 @@
 <?php namespace Feather\Presenter;
 
-use Illuminate\Filesystem;
-use Illuminate\View\ViewManager;
-use Illuminate\Config\Repository;
-
 class Presenter {
 
 	/**
@@ -11,35 +7,17 @@ class Presenter {
 	 * 
 	 * @var Illuminate\Foundation\Application
 	 */
-	protected $config;
-
-	/**
-	 * Filesystem instance.
-	 * 
-	 * @var Illuminate\Filesystem
-	 */
-	protected $files;
-
-	/**
-	 * Illuminate view manager instance.
-	 * 
-	 * @var Illuminate\View\ViewManager
-	 */
-	protected $view;
+	protected $app;
 
 	/**
 	 * Create a new theme instance.
 	 * 
-	 * @param  Illuminate\Config\Repository  $config
-	 * @param  Illuminate\Filesystem  $files
-	 * @param  Illuminate\View\ViewManager  $view
+	 * @param  Illuminate\Foundation\Application  $app
 	 * @return void
 	 */
-	public function __construct(Repository $config, Filesystem $files, ViewManager $view)
+	public function __construct($app)
 	{
-		$this->config = $config;
-		$this->files = $files;
-		$this->view = $view;
+		$this->app = $app;
 	}
 
 	/**
@@ -52,16 +30,16 @@ class Presenter {
 		// Assign a namespace and some cascading paths so that view files are first searched
 		// for within a theme then within the core view directory.
 		$hints = array(
-			$paths['path.themes'].'/'.ucfirst($this->config['feather::forum.theme']).'/Views',
+			$paths['path.themes'].'/'.ucfirst($this->app['config']['feather::forum.theme']).'/Views',
 			$paths['path'].'/Views'
 		);
 
-		$this->view->addNamespace('feather', $hints);
+		$this->app['view']->addNamespace('feather', $hints);
 
 		// If the theme has a start file require the file to bootstrap the theme.
-		$start = $paths['path.themes'].'/'.ucfirst($this->config['feather::forum.theme']).'/start.php';
+		$start = $paths['path.themes'].'/'.ucfirst($this->app['config']['feather::forum.theme']).'/start.php';
 
-		if ($this->files->exists($start))
+		if ($this->app['files']->exists($start))
 		{
 			require $start;
 		}
