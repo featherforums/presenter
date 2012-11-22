@@ -34,7 +34,7 @@ class PresenterServiceProvider extends ServiceProvider {
 			// The Compiler used by Feather is an extension to the Blade compiler. Feather
 			// has a few special methods that are used throughout views that need to be compiled
 			// alongside the default Blade methods.
-			$compiler = new Compiler($app['files'], $app['config']['view.cache']);
+			$compiler = new Compiler($app['files'], $app['path'].'/storage/views');
 
 			$engine = new CompilerEngine($compiler, $app['files'], $app['config']['view.paths'], '.blade.php');
 
