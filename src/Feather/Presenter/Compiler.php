@@ -5,7 +5,7 @@ use Illuminate\View\Compilers\BladeCompiler;
 class Compiler extends BladeCompiler {
 
 	/**
-	 * Compile the given Blade template contents.
+	 * Compile the given template contents.
 	 *
 	 * @param  string  $value
 	 * @return string
@@ -14,7 +14,7 @@ class Compiler extends BladeCompiler {
 	{
 		$this->compilers = array_merge($this->compilers, array(
 			'Assignments',
-			'GearEvents',
+			'ExtensionEvents',
 			'InlineErrors',
 			'Errors'
 		));
@@ -23,7 +23,7 @@ class Compiler extends BladeCompiler {
 	}
 
 	/**
-	 * Compile Knife assignments into valid PHP.
+	 * Compile assignments into valid PHP.
 	 * 
 	 * @param  string  $value
 	 * @return string
@@ -34,20 +34,20 @@ class Compiler extends BladeCompiler {
 	}
 
 	/**
-	 * Compile Knife gear events into valid PHP.
+	 * Compile extension events into valid PHP.
 	 * 
 	 * @param  string  $value
 	 * @return string
 	 */
-	public function compileGearEvents($value)
+	public function compileExtensionEvents($value)
 	{
 		$pattern = $this->createMatcher('event');
 
-		return preg_replace($pattern, '$1<?php echo Feather\Gear::fire$2; ?>', $value);
+		return preg_replace($pattern, '$1<?php echo Feather\Extension::fire$2; ?>', $value);
 	}
 
 	/**
-	 * Compile Knife inline errors into valid PHP.
+	 * Compile inline errors into valid PHP.
 	 * 
 	 * @param  string  $value
 	 * @return string
@@ -60,7 +60,7 @@ class Compiler extends BladeCompiler {
 	}
 
 	/**
-	 * Compile Knife errors into valid PHP.
+	 * Compile errors into valid PHP.
 	 * 
 	 * @param  string  $value
 	 * @return string
