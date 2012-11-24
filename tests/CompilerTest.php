@@ -1,7 +1,7 @@
 <?php
 
 use Mockery as m;
-use Feather\Presenter\Compiler;
+use Feather\Presenter\Compilers\FeatherCompiler;
 
 class CompilerTest extends PHPUnit_Framework_TestCase {
 
@@ -14,7 +14,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
 
 	public function testAssignmentsAreCompiled()
 	{
-		$compiler = new Compiler($this->getFiles(), __DIR__);
+		$compiler = new FeatherCompiler($this->getFiles(), __DIR__);
 		$this->assertEquals('<?php $foo = \'bar\'; ?>', $compiler->compileString('@assign($foo, \'bar\')'));
 		$this->assertEquals('<?php $foo = $bar; ?>', $compiler->compileString('@assign($foo, $bar)'));
 	}
@@ -22,15 +22,15 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
 
 	public function testGearEventsAreCompiled()
 	{
-		$compiler = new Compiler($this->getFiles(), __DIR__);
-		$expected = '<?php echo Feather\Gear::fire(\'foo\'); ?>';
+		$compiler = new FeatherCompiler($this->getFiles(), __DIR__);
+		$expected = '<?php echo Feather\Extension::fire(\'foo\'); ?>';
 		$this->assertEquals($expected, $compiler->compileString('@event(\'foo\')'));
 	}
 
 
 	public function testInlineErrorsAreCompiled()
 	{
-		$compiler = new Compiler($this->getFiles(), __DIR__);
+		$compiler = new FeatherCompiler($this->getFiles(), __DIR__);
 		$expected = '<?php echo $errors->has(\'foo\') ? view("feather::errors.inline", array("error" => $errors->first(\'foo\'))) : null; ?>';
 		$this->assertEquals($expected, $compiler->compileString('@error(\'foo\')'));
 	}
@@ -38,7 +38,7 @@ class CompilerTest extends PHPUnit_Framework_TestCase {
 
 	public function testErrorsAreCompiled()
 	{
-		$compiler = new Compiler($this->getFiles(), __DIR__);
+		$compiler = new FeatherCompiler($this->getFiles(), __DIR__);
 		$expected = '<?php echo $errors->all() ? view("feather::errors.page", array("errors" => $errors->all())) : null; ?>';
 		$this->assertEquals($expected, $compiler->compileString('@errors'));
 	}

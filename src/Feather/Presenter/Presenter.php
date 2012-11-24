@@ -37,7 +37,7 @@ class Presenter {
 		// Assign a namespace and some cascading paths so that view files are first searched
 		// for within a theme then within the core view directory.
 		$hints = array(
-			$this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/Views',
+			$this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/views',
 			$this->app['feather']['path'].'/Views'
 		);
 

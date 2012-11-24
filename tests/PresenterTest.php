@@ -20,9 +20,13 @@ class PresenterTest extends PHPUnit_Framework_TestCase {
 		$app['files'] = m::mock('Illuminate\Filesystem');
 		$app['files']->shouldReceive('exists')->once()->andReturn(false);
 		$app['view'] = m::mock('Illuminate\View\ViewManager');
-		$app['view']->shouldReceive('addNamespace')->once()->with('feather', array('Themes/Foo/Views', 'Application/Views'));
+		$app['view']->shouldReceive('addNamespace')->once()->with('feather', array('Themes/foo/views', 'Application/Views'));
+		$app['feather'] = array(
+			'path' => 'Application',
+			'path.themes' => 'Themes'
+		);
 		$presenter = new Presenter($app);
-		$presenter->prepare(array('path.themes' => 'Themes', 'path' => 'Application'));
+		$presenter->prepare();
 	}
 
 
