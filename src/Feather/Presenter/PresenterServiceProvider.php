@@ -31,12 +31,12 @@ class PresenterServiceProvider extends ServiceProvider {
 	 */
 	public function registerCompiler($app)
 	{
-		$app['view']->addExtension('blade.php', 'feather.presenter', function() use ($app)
+		$app['view']->addExtension('blade.php', 'feather.compiler', function() use ($app)
 		{
-			// The Compiler used by Feather is an extension to the Blade compiler. Feather
+			// FeatherCompiler is used by Feather is an extension to the Blade compiler. Feather
 			// has a few special methods that are used throughout views that need to be compiled
 			// alongside the default Blade methods.
-			$compiler = new Compiler($app['files'], $app['path'].'/storage/views');
+			$compiler = new Compilers\FeatherCompiler($app['files'], $app['path'].'/storage/views');
 			
 			return new CompilerEngine($compiler, $app['files']);
 		});

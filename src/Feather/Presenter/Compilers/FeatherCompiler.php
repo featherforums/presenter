@@ -1,8 +1,8 @@
-<?php namespace Feather\Presenter;
+<?php namespace Feather\Presenter\Compilers;
 
 use Illuminate\View\Compilers\BladeCompiler;
 
-class Compiler extends BladeCompiler {
+class FeatherCompiler extends BladeCompiler {
 
 	/**
 	 * Compile the given template contents.
