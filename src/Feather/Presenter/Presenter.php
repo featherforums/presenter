@@ -25,22 +25,32 @@ class Presenter {
 	 * 
 	 * @return void
 	 */
-	public function prepare($paths)
+	public function prepare()
 	{
+		// If we are within theme development mode and not running within the console then we'll publish the current themes
+		// assets. This is especially handy when you're making a lot of changes to your themes assets.
+		if ($this->app['config']->get('feather::forum.theme_development_mode') and ! $this->app->runningInConsole())
+		{
+			$this->app['artisan']->call('feather:publish:theme', array('name' => $this->app['config']->get('feather::forum.theme')));
+		}
+
 		// Assign a namespace and some cascading paths so that view files are first searched
 		// for within a theme then within the core view directory.
 		$hints = array(
-			$paths['path.themes'].'/'.ucfirst($this->app['config']['feather::forum.theme']).'/Views',
-			$paths['path'].'/Views'
+			$this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/Views',
+			$this->app['feather']['path'].'/Views'
 		);
 
 		$this->app['view']->addNamespace('feather', $hints);
 
 		// If the theme has a start file require the file to bootstrap the theme.
-		$start = $paths['path.themes'].'/'.ucfirst($this->app['config']['feather::forum.theme']).'/start.php';
+		$start = $this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/start.php';
 
 		if ($this->app['files']->exists($start))
 		{
+			// We'll make $app available to our start scripts so that they can access bound data and components.
+			$app = $this->app;
+
 			require $start;
 		}
 	}
