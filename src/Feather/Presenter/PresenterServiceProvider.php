@@ -14,12 +14,14 @@ class PresenterServiceProvider extends ServiceProvider {
 	 */
 	public function register($app)
 	{
-		$this->registerCompiler($app);
-
 		$app['feather']['presenter'] = $app->share(function() use ($app)
 		{
 			return new Presenter($app);
 		});
+		
+		$this->registerCompiler($app);
+
+		$this->registerCommands($app);
 	}
 
 	/**
@@ -29,19 +31,34 @@ class PresenterServiceProvider extends ServiceProvider {
 	 */
 	public function registerCompiler($app)
 	{
-		$app['view']->extend('feather.presenter', function($app)
+		$app['view']->addExtension('blade.php', 'feather.presenter', function() use ($app)
 		{
 			// The Compiler used by Feather is an extension to the Blade compiler. Feather
 			// has a few special methods that are used throughout views that need to be compiled
 			// alongside the default Blade methods.
 			$compiler = new Compiler($app['files'], $app['path'].'/storage/views');
+			
+			return new CompilerEngine($compiler, $app['files']);
+		});
+	}
 
-			$engine = new CompilerEngine($compiler, $app['files'], $app['config']['view.paths'], '.blade.php');
-
-			return new Environment($engine, $app['events']);
+	/**
+	 * Register the console commands.
+	 * 
+	 * @param  Illuminate\Foundation\Application  $app
+	 * @return void
+	 */
+	protected function registerCommands($app)
+	{
+		$app['command.feather.publish.theme'] = $app->share(function($app)
+		{
+			return new Console\PublishThemeCommand($app, $app['path.base'].'/public/feather/themes');
 		});
 
-		$app['config']['view.driver'] = 'feather.presenter';
+		$app['events']->listen('artisan.start', function($artisan)
+		{
+			$artisan->resolve('command.feather.publish.theme');
+		});
 	}
 
 }
