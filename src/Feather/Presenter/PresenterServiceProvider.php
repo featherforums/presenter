@@ -20,8 +20,6 @@ class PresenterServiceProvider extends ServiceProvider {
 		});
 		
 		$this->registerCompiler($app);
-
-		$this->registerCommands($app);
 	}
 
 	/**
@@ -39,25 +37,6 @@ class PresenterServiceProvider extends ServiceProvider {
 			$compiler = new Compilers\FeatherCompiler($app['files'], $app['path'].'/storage/views');
 			
 			return new CompilerEngine($compiler, $app['files']);
-		});
-	}
-
-	/**
-	 * Register the console commands.
-	 * 
-	 * @param  Illuminate\Foundation\Application  $app
-	 * @return void
-	 */
-	protected function registerCommands($app)
-	{
-		$app['command.feather.publish.theme'] = $app->share(function($app)
-		{
-			return new Console\PublishThemeCommand($app, $app['path.base'].'/public/feather/themes');
-		});
-
-		$app['events']->listen('artisan.start', function($artisan)
-		{
-			$artisan->resolve('command.feather.publish.theme');
 		});
 	}
 
