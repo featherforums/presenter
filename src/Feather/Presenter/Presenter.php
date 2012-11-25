@@ -31,17 +31,15 @@ class Presenter {
 		// assets. This is especially handy when you're making a lot of changes to your themes assets.
 		if ($this->app['config']->get('feather::forum.theme_development_mode') and ! $this->app->runningInConsole())
 		{
-			$this->app['artisan']->call('feather:publish:theme', array('name' => $this->app['config']->get('feather::forum.theme')));
+			$this->app['artisan']->call('feather:publish', array('name' => $this->app['config']->get('feather::forum.theme'), '--theme' => true));
 		}
 
 		// Assign a namespace and some cascading paths so that view files are first searched
 		// for within a theme then within the core view directory.
-		$hints = array(
+		$this->app['view']->addNamespace('feather', array(
 			$this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/views',
 			$this->app['feather']['path'].'/Views'
-		);
-
-		$this->app['view']->addNamespace('feather', $hints);
+		));
 
 		// If the theme has a start file require the file to bootstrap the theme.
 		$start = $this->app['feather']['path.themes'].'/'.$this->app['config']->get('feather::forum.theme').'/start.php';
